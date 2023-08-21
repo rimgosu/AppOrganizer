@@ -1,4 +1,3 @@
-// AppSettingsDAO.kt
 package com.example.apptest2
 
 import android.content.Context
@@ -14,6 +13,9 @@ class AppSettingsDAO(private val context: Context) {
     private val PREFS_NAME = "AppSettings"
     private val COLUMN_COUNT_KEY = "ColumnCount"
     private val sharedPref = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+
+    var individualIconSize: Int = 105 // 각 이미지의 길이를 설정하는 전역 변수
+    var appIconPadding: Int = 2 // 어플 이미지와 이미지 사이의 패딩을 설정하는 전역 변수 (in dp)
 
     fun saveColumnCount(count: Int) {
         with(sharedPref.edit()) {
@@ -35,6 +37,7 @@ class AppSettingsDAO(private val context: Context) {
     private fun loadLauncherAppsViews(): List<LinearLayout> {
         val launcherApps = getLauncherApps()
         val appViews = mutableListOf<LinearLayout>()
+        val paddingInPixels = (context.resources.displayMetrics.density * appIconPadding).toInt() // 패딩을 픽셀 단위로 변환
 
         for (app in launcherApps) {
             val appIcon: Drawable = app.activityInfo.loadIcon(context.packageManager)
@@ -47,19 +50,13 @@ class AppSettingsDAO(private val context: Context) {
             }
             val imageView = ImageView(context)
             imageView.setImageDrawable(appIcon)
-            imageView.layoutParams = LinearLayout.LayoutParams(100, 100) // You might want to adjust this
+            imageView.setPadding(paddingInPixels, paddingInPixels, paddingInPixels, paddingInPixels) // 패딩 설정
+            imageView.layoutParams = LinearLayout.LayoutParams(individualIconSize, individualIconSize) // 전역 변수를 사용하여 아이콘 크기 설정
             appContainer.addView(imageView)
             appViews.add(appContainer)
         }
 
         return appViews
-    }
-
-    fun getIconSizeBasedOnColumnCount(columnCount: Int): Int {
-        val displayMetrics = context.resources.displayMetrics
-        val screenWidth = displayMetrics.widthPixels
-        val totalWidthForIcons = (0.8 * screenWidth).toInt()
-        return totalWidthForIcons / columnCount
     }
 
     fun updateLauncherAppsViews(container: GridLayout) {
