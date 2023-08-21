@@ -13,9 +13,11 @@ class AppSettingsDAO(private val context: Context) {
     private val PREFS_NAME = "AppSettings"
     private val COLUMN_COUNT_KEY = "ColumnCount"
     private val sharedPref = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
-
-    var individualIconSize: Int = 105 // 각 이미지의 길이를 설정하는 전역 변수
     var appIconPadding: Int = 2 // 어플 이미지와 이미지 사이의 패딩을 설정하는 전역 변수 (in dp)
+
+    fun getIndividualIconSize(columnCount: Int): Int {
+        return 1050 / columnCount
+    }
 
     fun saveColumnCount(count: Int) {
         with(sharedPref.edit()) {
@@ -40,8 +42,8 @@ class AppSettingsDAO(private val context: Context) {
         val paddingInPixels = (context.resources.displayMetrics.density * appIconPadding).toInt()
 
         for (app in launcherApps) {
-            val packageName = app.activityInfo.packageName // 패키지 이름 가져오기
-            val className = app.activityInfo.name // 클래스 이름 가져오기
+            val packageName = app.activityInfo.packageName
+            val className = app.activityInfo.name
 
             val appIcon: Drawable = app.activityInfo.loadIcon(context.packageManager)
             val appContainer = LinearLayout(context).apply {
@@ -54,9 +56,8 @@ class AppSettingsDAO(private val context: Context) {
             val imageView = ImageView(context)
             imageView.setImageDrawable(appIcon)
             imageView.setPadding(paddingInPixels, paddingInPixels, paddingInPixels, paddingInPixels)
-            imageView.layoutParams = LinearLayout.LayoutParams(individualIconSize, individualIconSize)
+            imageView.layoutParams = LinearLayout.LayoutParams(getIndividualIconSize(getColumnCount()), getIndividualIconSize(getColumnCount()))
 
-            // 이미지 뷰에 클릭 리스너 추가
             imageView.setOnClickListener {
                 val launchIntent = Intent(Intent.ACTION_MAIN).apply {
                     setClassName(packageName, className)
@@ -72,7 +73,6 @@ class AppSettingsDAO(private val context: Context) {
         return appViews
     }
 
-
     fun updateLauncherAppsViews(container: GridLayout) {
         container.removeAllViews()
         val appViews = loadLauncherAppsViews()
@@ -87,6 +87,4 @@ class AppSettingsDAO(private val context: Context) {
         updateLauncherAppsViews(container)
         container.columnCount = columnCount
     }
-
-
 }
