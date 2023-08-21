@@ -37,9 +37,12 @@ class AppSettingsDAO(private val context: Context) {
     private fun loadLauncherAppsViews(): List<LinearLayout> {
         val launcherApps = getLauncherApps()
         val appViews = mutableListOf<LinearLayout>()
-        val paddingInPixels = (context.resources.displayMetrics.density * appIconPadding).toInt() // 패딩을 픽셀 단위로 변환
+        val paddingInPixels = (context.resources.displayMetrics.density * appIconPadding).toInt()
 
         for (app in launcherApps) {
+            val packageName = app.activityInfo.packageName // 패키지 이름 가져오기
+            val className = app.activityInfo.name // 클래스 이름 가져오기
+
             val appIcon: Drawable = app.activityInfo.loadIcon(context.packageManager)
             val appContainer = LinearLayout(context).apply {
                 orientation = LinearLayout.VERTICAL
@@ -50,14 +53,25 @@ class AppSettingsDAO(private val context: Context) {
             }
             val imageView = ImageView(context)
             imageView.setImageDrawable(appIcon)
-            imageView.setPadding(paddingInPixels, paddingInPixels, paddingInPixels, paddingInPixels) // 패딩 설정
-            imageView.layoutParams = LinearLayout.LayoutParams(individualIconSize, individualIconSize) // 전역 변수를 사용하여 아이콘 크기 설정
+            imageView.setPadding(paddingInPixels, paddingInPixels, paddingInPixels, paddingInPixels)
+            imageView.layoutParams = LinearLayout.LayoutParams(individualIconSize, individualIconSize)
+
+            // 이미지 뷰에 클릭 리스너 추가
+            imageView.setOnClickListener {
+                val launchIntent = Intent(Intent.ACTION_MAIN).apply {
+                    setClassName(packageName, className)
+                    addCategory(Intent.CATEGORY_LAUNCHER)
+                }
+                context.startActivity(launchIntent)
+            }
+
             appContainer.addView(imageView)
             appViews.add(appContainer)
         }
 
         return appViews
     }
+
 
     fun updateLauncherAppsViews(container: GridLayout) {
         container.removeAllViews()
@@ -73,4 +87,6 @@ class AppSettingsDAO(private val context: Context) {
         updateLauncherAppsViews(container)
         container.columnCount = columnCount
     }
+
+
 }
