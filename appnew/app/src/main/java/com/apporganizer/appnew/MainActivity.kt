@@ -1,4 +1,4 @@
-package com.example.apptest2
+package com.apporganizer.appnew
 
 import android.os.Bundle
 import android.widget.GridLayout

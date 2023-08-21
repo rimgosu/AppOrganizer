@@ -1,4 +1,4 @@
-package com.example.apptest2
+package com.apporganizer.appnew
 
 import android.content.Context
 import android.content.Intent
