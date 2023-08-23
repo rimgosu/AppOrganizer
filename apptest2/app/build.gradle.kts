@@ -11,8 +11,8 @@ android {
         applicationId = "com.AppOrganizerFinalizer.apptest2"
         minSdk = 24
         targetSdk = 33
-        versionCode = 1
-        versionName = "1.0"
+        versionCode = 4
+        versionName = "4.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }

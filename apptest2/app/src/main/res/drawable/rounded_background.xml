@@ -1,0 +1,24 @@
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- 그림자를 표현하는 아이템 -->
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="@color/darkWhite" />
+            <corners android:radius="10dp" />
+        </shape>
+    </item>
+
+    <!-- 그림자를 나타내는 아이템 -->
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="@android:color/transparent" />
+            <corners android:radius="10dp" />
+        </shape>
+        <padding android:left="0dp" android:top="0dp" android:right="0dp" android:bottom="10dp" />
+        <corners android:radius="10dp" />
+        <gradient
+            android:startColor="#33000000"
+            android:centerColor="#22000000"
+            android:endColor="#11000000"
+            android:angle="270" />
+    </item>
+</layer-list>

@@ -1,58 +1,83 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@color/black">
+    android:background="@color/black"
+    android:orientation="vertical">
 
-    <!-- SearchBar
 
-        &lt;!&ndash; Search Feature &ndash;&gt;
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:elevation="4dp"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp">
+
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:orientation="horizontal"
-            android:padding="8dp">
+            android:gravity="start"
+            android:background="@drawable/rounded_background"
 
-            &lt;!&ndash; Search EditText &ndash;&gt;
+            android:elevation="4dp"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:layout_margin="3dp">
+
+            <!-- 검색 아이콘 -->
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/baseline_search_24" />
+
+            <!-- 검색 입력 부분 -->
             <EditText
+                android:contentDescription="searchinput"
                 android:id="@+id/searchEditText"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
                 android:layout_weight="1"
-                android:hint="@string/search_hint"
-                android:inputType="text"
-                android:background="@android:drawable/edit_text"/>
+                android:background="@android:color/transparent"
+                android:textColorHint="@color/lightWhite"/>
 
-            &lt;!&ndash; Search Button &ndash;&gt;
-            <ImageButton
-                android:id="@+id/searchButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@android:drawable/ic_menu_search"
-                android:background="?android:attr/selectableItemBackground"
-                android:contentDescription="@string/search_button_desc"/>
         </LinearLayout>
-    -->
+
+        <!-- 메뉴 아이콘 -->
+        <ImageView
+            android:id="@+id/setting"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/baseline_more_vert_24"
+            android:layout_marginLeft="5dp"/>
+
+    </LinearLayout>
 
     <SeekBar
         android:id="@+id/columnCountSeekBar"
-        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_width="400dp"
         android:max="10"
         android:min="3"
         android:progress="10" />
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:contentDescription="ScrollView">
 
         <GridLayout
             android:id="@+id/appListContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="2dp">
-        </GridLayout>
+            android:padding="2dp"></GridLayout>
 
     </ScrollView>
 </LinearLayout>

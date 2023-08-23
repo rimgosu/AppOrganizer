@@ -2,6 +2,7 @@ package com.AppOrganizerFinalizer.apptest2
 
 import android.os.Bundle
 import android.widget.GridLayout
+import android.widget.ImageView
 import android.widget.SeekBar
 import androidx.appcompat.app.AppCompatActivity
 
@@ -19,19 +20,12 @@ class MainActivity : AppCompatActivity() {
         container = findViewById(R.id.appListContainer)
         container.columnCount = appSettingsDAO.getColumnCount()
 
-        val seekBar: SeekBar = findViewById(R.id.columnCountSeekBar)
-        seekBar.progress = appSettingsDAO.getColumnCount()
-        seekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
-            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
-                if (progress < 1) return
-                appSettingsDAO.updateSettingsAndViews(progress, container)
-            }
 
-            override fun onStartTrackingTouch(seekBar: SeekBar?) {}
-
-            override fun onStopTrackingTouch(seekBar: SeekBar?) {}
-        })
 
         appSettingsDAO.updateLauncherAppsViews(container)
+
+        val settingIcon: ImageView = findViewById(R.id.setting)
+        SettingDAO.setupSettingIcon(settingIcon, this) // Use SettingDAO to set up click listener
     }
+
 }

@@ -13,29 +13,9 @@ class AppSettingsDAO(private val context: Context) {
     private val PREFS_NAME = "AppSettings"
     private val COLUMN_COUNT_KEY = "ColumnCount"
     private val sharedPref = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
-    var appIconPadding: Int = 2 // 어플 이미지와 이미지 사이의 패딩을 설정하는 전역 변수 (in dp)
+    var appIconPadding: Int = 2 // 앱 아이콘 간의 패딩 설정 (단위: dp)
 
-    fun getIndividualIconSize(columnCount: Int): Int {
-        return 1050 / columnCount
-    }
-
-    fun saveColumnCount(count: Int) {
-        with(sharedPref.edit()) {
-            putInt(COLUMN_COUNT_KEY, count)
-            apply()
-        }
-    }
-
-    fun getColumnCount(): Int {
-        return sharedPref.getInt(COLUMN_COUNT_KEY, 4)
-    }
-
-    private fun getLauncherApps(): List<ResolveInfo> {
-        val intent = Intent(Intent.ACTION_MAIN, null)
-        intent.addCategory(Intent.CATEGORY_LAUNCHER)
-        return context.packageManager.queryIntentActivities(intent, 0)
-    }
-
+    // 런처 앱들의 뷰 생성 및 리스트 반환
     private fun loadLauncherAppsViews(): List<LinearLayout> {
         val launcherApps = getLauncherApps()
         val appViews = mutableListOf<LinearLayout>()
@@ -58,6 +38,7 @@ class AppSettingsDAO(private val context: Context) {
             imageView.setPadding(paddingInPixels, paddingInPixels, paddingInPixels, paddingInPixels)
             imageView.layoutParams = LinearLayout.LayoutParams(getIndividualIconSize(getColumnCount()), getIndividualIconSize(getColumnCount()))
 
+            // 아이콘 클릭시 해당 앱 실행
             imageView.setOnClickListener {
                 val launchIntent = Intent(Intent.ACTION_MAIN).apply {
                     setClassName(packageName, className)
@@ -73,6 +54,33 @@ class AppSettingsDAO(private val context: Context) {
         return appViews
     }
 
+    // 주어진 열 개수에 따른 개별 아이콘의 크기 계산
+    fun getIndividualIconSize(columnCount: Int): Int {
+        return 1050 / columnCount
+    }
+
+    // 열 개수를 공유 환경 설정에 저장
+    fun saveColumnCount(count: Int) {
+        with(sharedPref.edit()) {
+            putInt(COLUMN_COUNT_KEY, count)
+            apply()
+        }
+    }
+
+    // 공유 환경 설정에서 열 개수 가져오기 (기본값: 4)
+    fun getColumnCount(): Int {
+        return sharedPref.getInt(COLUMN_COUNT_KEY, 4)
+    }
+
+    // 사용자의 기기에 설치된 런처 앱 목록 가져오기
+    private fun getLauncherApps(): List<ResolveInfo> {
+        val intent = Intent(Intent.ACTION_MAIN, null)
+        intent.addCategory(Intent.CATEGORY_LAUNCHER)
+        return context.packageManager.queryIntentActivities(intent, 0)
+    }
+
+
+    // 기존에 있던 런처 앱 뷰들을 제거하고 새로운 앱 뷰들로 업데이트
     fun updateLauncherAppsViews(container: GridLayout) {
         container.removeAllViews()
         val appViews = loadLauncherAppsViews()
@@ -82,6 +90,7 @@ class AppSettingsDAO(private val context: Context) {
         }
     }
 
+    // 열 개수 설정 및 런처 앱 뷰 업데이트
     fun updateSettingsAndViews(columnCount: Int, container: GridLayout) {
         saveColumnCount(columnCount)
         updateLauncherAppsViews(container)
