@@ -20,7 +20,18 @@ class MainActivity : AppCompatActivity() {
         container = findViewById(R.id.appListContainer)
         container.columnCount = appSettingsDAO.getColumnCount()
 
+        val seekBar: SeekBar = findViewById(R.id.columnCountSeekBar)
+        seekBar.progress = appSettingsDAO.getColumnCount()
+        seekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+                if (progress < 1) return
+                appSettingsDAO.updateSettingsAndViews(progress, container)
+            }
 
+            override fun onStartTrackingTouch(seekBar: SeekBar?) {}
+
+            override fun onStopTrackingTouch(seekBar: SeekBar?) {}
+        })
 
         appSettingsDAO.updateLauncherAppsViews(container)
 
