@@ -60,15 +60,10 @@
 
     </LinearLayout>
 
-    <SeekBar
-        android:id="@+id/columnCountSeekBar"
-        android:layout_height="wrap_content"
-        android:layout_width="400dp"
-        android:max="10"
-        android:min="3"
-        android:progress="10" />
+
 
     <ScrollView
+        android:layout_marginTop="2dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:contentDescription="ScrollView">
