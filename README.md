@@ -1,4 +1,4 @@
-![image](https://github.com/rimgosu/AppOrganizer/assets/120752098/fc42533a-7839-4c1c-a56c-c941c6949bb0)
+<img width="757" alt="image" src="https://github.com/rimgosu/AppOrganizer/assets/120752098/2fadfbdf-903c-415b-9861-84abe587c393">
 
 # AppOrganizer
 - 자동으로 **어플리케이션을 정리**해주는 어플리케이션입니다.
